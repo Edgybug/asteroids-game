@@ -1,33 +1,39 @@
 import pygame 
 from constants import *
-from circleshape import *
-from player import *
+from player import Player
 
 def main():
     
     pygame.init()
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     pygame.display.set_caption("My Asteroids Game")
-    running = True
+    clock = pygame.time.Clock()
+   
+   
+    
+    updatable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
+
+    Player.containers = (updatable, drawable)
+    player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2) #define player to be in the middle of the screen
 
     dt = 0 
-    clock = pygame.time.Clock()
-     
-    while running:
+    
+    while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
-                running = False
+                return
             
+        updatable.update(dt)    
         screen.fill(BG_COLOR)
-        player = Player(SCREEN_WIDTH/2, SCREEN_HEIGHT/2) #define player to be in the middle of the screen
-        player.draw(screen)
+
+        for obj in drawable:
+            obj.draw(screen)
+            
         pygame.display.flip()
-        clock.tick(60)
+
+        #limit the framerate to 60fps
+        dt = clock.tick(60) / 1000
         
-    dt = clock.tick(60) / 1000 
-    print(dt)
-
-    
-
 if __name__ == "__main__":
     main()
