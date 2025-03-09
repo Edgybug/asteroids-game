@@ -27,8 +27,5 @@ class Asteroid(CircleShape):
         a1.velocity = self.velocity.rotate(random_angle) * 1.2
         a2 = Asteroid(self.position.x, self.position.y, new_radius)
         a2.velocity = self.velocity.rotate(-random_angle) * 1.2
-    
-    def explode(self):
-        explosion = Explosion(self.position.x, self.position.y)
-        return explosion
+   
         

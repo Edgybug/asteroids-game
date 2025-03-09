@@ -50,7 +50,7 @@ def main():
         for asteroid in asteroids:
             for shot in shots:
                 if asteroid.collides_with(shot):
-                    explosion = asteroid.explode()
+                    explosion = Explosion(asteroid.position.x, asteroid.position.y)
                     explosion_group.add(explosion)
 
                     asteroid.split()
@@ -58,15 +58,16 @@ def main():
                     asteroid.kill()
                     shot.kill() 
 
-                    player.player_score()
-                    
-        for asteroid in asteroids:
-            if player.lifes > 0 and asteroid.collides_with(player):
-                    print("Lost a life")
-                    player = player.respawn()
-            elif player.lifes <= 0 and asteroid.collides_with(player):
-                    print("Game Over!")
-                    sys.exit()
+                    player.player_score() 
+
+        if not player.invulnerable:
+            for asteroid in asteroids:
+                if player.lifes > 0 and asteroid.collides_with(player):
+                        print("Lost a life")
+                        player = player.respawn()
+                elif player.lifes <= 0 and asteroid.collides_with(player):
+                        print("Game Over!")
+                        sys.exit()
            
         screen.fill(BG_COLOR) 
  
