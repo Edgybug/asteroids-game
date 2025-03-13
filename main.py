@@ -63,6 +63,8 @@ def main():
         if not player.invulnerable:
             for asteroid in asteroids:
                 if player.lifes > 0 and asteroid.collides_with(player):
+                        explosion = Explosion(player.position.x, player.position.y)
+                        explosion_group.add(explosion)
                         print("Lost a life")
                         player = player.respawn()
                 elif player.lifes <= 0 and asteroid.collides_with(player):

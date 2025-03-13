@@ -9,7 +9,9 @@ class Player(CircleShape):
         
         self.shoot_timer = 0
         self.score = 0 
-
+        self.image = pygame.image.load("img/ship.png")
+        self.image = pygame.transform.scale(self.image, (50, 50))
+    
         #survivability variables
         self.lifes = 3
         self.invulnerable = False
@@ -27,13 +29,20 @@ class Player(CircleShape):
         
     
     def draw(self, screen):
+       # Rotate the image to match the player's rotation
+        rotated_image = pygame.transform.rotate(self.image, -self.rotation - 180)
+    
+        # Get the rectangle for the rotated image
+        rect = rotated_image.get_rect(center=self.position)
+    
         # Make the player flash when invulnerable
         if self.invulnerable:
-            # Flash effect - only draw during certain frames
+        # Flash effect - only draw during certain frames
             if pygame.time.get_ticks() % 200 < 100:  # Flash twice per second
-                pygame.draw.polygon(screen, (255, 255, 255), self.triangle(), 2)
+                screen.blit(rotated_image, rect)
         else:
-            pygame.draw.polygon(screen, (255, 255, 255), self.triangle(), 2)
+            screen.blit(rotated_image, rect)
+          
 
     def triangle(self):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
@@ -116,9 +125,6 @@ class Player(CircleShape):
        
     def rotate(self, dt):
         self.rotation += PLAYER_TURN_SPEED * dt 
-    
-    def move(self, dt):
-        pass
 
     def accelerate(self, dt):
         if self.acceleration < MAX_ACCELERATION:
@@ -133,7 +139,6 @@ class Player(CircleShape):
     def is_player_stationary(self):
         return self.velocity.length() < 0.1  # Adjust threshold as needed
         
-    
     def shoot(self):    
         if self.shoot_timer > 0:
             return
